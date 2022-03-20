@@ -2,7 +2,11 @@
 
 Repository adding a few functional methods to a package. Mainly for my own personal use.
 
-Example usage:
+## Installation:
+
+`go get github.com/RGood/go-collection-functions`
+
+## Example usage:
 
 Map:
 

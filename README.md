@@ -14,14 +14,14 @@ Map:
 elements := []int{1, 2, 3, 4, 5}
 
 // Multiply each element by 2
-newElements := collections.Map(elements, func(e int) int {
+newElements := collection.Map(elements, func(e int) int {
     return e * 2
 })
 
 //Convert the elments to a string and join them on ", "
 println(
     strings.Join(
-        collections.Map(newElements, func(e int) string {
+        collection.Map(newElements, func(e int) string {
             return fmt.Sprintf("%d", e)
         }),
         ", ",

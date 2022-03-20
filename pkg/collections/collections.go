@@ -22,9 +22,9 @@ func All(elements []bool) bool {
 	return true
 }
 
-func Map[K, V interface{}](list []K, mapper func(K) V) []V {
+func Map[K, V interface{}](elements []K, mapper func(K) V) []V {
 	results := []V{}
-	for _, e := range list {
+	for _, e := range elements {
 		results = append(results, mapper(e))
 	}
 	return results

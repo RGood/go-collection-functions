@@ -1,4 +1,4 @@
-package collections
+package collection
 
 type Array []interface{}
 

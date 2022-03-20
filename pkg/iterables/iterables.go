@@ -40,21 +40,13 @@ type MapIterable[K comparable, V interface{}] struct {
 }
 
 func NewMapIterable[K comparable, V interface{}](data map[K]V) Iterable[*Pair[K, V]] {
-	generatorChan := make(chan *Pair[K, V])
-
-	go func() {
-		defer close(generatorChan)
-		for k, v := range data {
-			generatorChan <- &Pair[K, V]{Key: k, Value: v}
-
-		}
-	}()
-
 	iter := &MapIterable[K, V]{
 		data:          data,
 		index:         0,
-		generatorChan: generatorChan,
+		generatorChan: make(chan *Pair[K, V]),
 	}
+
+	iter.Reset()
 
 	iter.Iterable = iter
 	return iter

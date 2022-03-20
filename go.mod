@@ -1,4 +1,4 @@
-module github.com/RGood/go-collection-func
+module github.com/RGood/go-collection-functions
 
 go 1.18
 

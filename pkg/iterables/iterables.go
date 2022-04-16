@@ -1,12 +1,12 @@
 package iterables
 
-type SliceIterable[K interface{}] struct {
+type SliceIterable[K any] struct {
 	abstractIterable[K]
 	data  []K
 	index int
 }
 
-func NewSliceIterable[K interface{}](elements []K) Iterable[K] {
+func NewSliceIterable[K any](elements []K) Iterable[K] {
 	iter := &SliceIterable[K]{data: elements, index: 0}
 	iter.Iterable = iter
 	return iter
@@ -27,19 +27,19 @@ func (si *SliceIterable[K]) Reset() {
 	si.index = 0
 }
 
-type Pair[K comparable, V interface{}] struct {
+type Pair[K comparable, V any] struct {
 	Key   K
 	Value V
 }
 
-type MapIterable[K comparable, V interface{}] struct {
+type MapIterable[K comparable, V any] struct {
 	abstractIterable[*Pair[K, V]]
 	data          map[K]V
 	index         int
 	generatorChan chan *Pair[K, V]
 }
 
-func NewMapIterable[K comparable, V interface{}](data map[K]V) Iterable[*Pair[K, V]] {
+func NewMapIterable[K comparable, V any](data map[K]V) Iterable[*Pair[K, V]] {
 	iter := &MapIterable[K, V]{
 		data:          data,
 		index:         0,
@@ -67,7 +67,7 @@ func (mi *MapIterable[K, V]) Reset() {
 	}()
 }
 
-type MappingIterable[K, V interface{}] struct {
+type MappingIterable[K, V any] struct {
 	abstractIterable[K]
 	parentIterable Iterable[V]
 	mapper         func(V) K
@@ -87,7 +87,7 @@ func (mi *MappingIterable[K, V]) Reset() {
 	mi.parentIterable.Reset()
 }
 
-func Map[K, V interface{}](parent Iterable[K], mapper func(K) V) Iterable[V] {
+func Map[K, V any](parent Iterable[K], mapper func(K) V) Iterable[V] {
 	iter := &MappingIterable[V, K]{
 		parentIterable: parent,
 		mapper:         mapper,
@@ -97,7 +97,7 @@ func Map[K, V interface{}](parent Iterable[K], mapper func(K) V) Iterable[V] {
 	return iter
 }
 
-type FilterIterable[K interface{}] struct {
+type FilterIterable[K any] struct {
 	abstractIterable[K]
 	parentIterable Iterable[K]
 	filter         func(K) bool
@@ -121,7 +121,7 @@ func (fi *FilterIterable[K]) Reset() {
 	fi.parentIterable.Reset()
 }
 
-func Filter[K interface{}](parent Iterable[K], filter func(K) bool) Iterable[K] {
+func Filter[K any](parent Iterable[K], filter func(K) bool) Iterable[K] {
 	iter := &FilterIterable[K]{
 		parentIterable: parent,
 		filter:         filter,
@@ -131,7 +131,7 @@ func Filter[K interface{}](parent Iterable[K], filter func(K) bool) Iterable[K] 
 	return iter
 }
 
-func Reduce[K, V interface{}](elements Iterable[V], init K, reducer func(K, V) K) K {
+func Reduce[K, V any](elements Iterable[V], init K, reducer func(K, V) K) K {
 	result := init
 	elements.ForEach(func(_ int, element V) {
 		result = reducer(result, element)
@@ -140,7 +140,7 @@ func Reduce[K, V interface{}](elements Iterable[V], init K, reducer func(K, V) K
 	return result
 }
 
-type abstractIterable[K interface{}] struct {
+type abstractIterable[K any] struct {
 	Iterable[K]
 }
 
@@ -174,7 +174,7 @@ func (ai *abstractIterable[K]) Collect() []K {
 	return res
 }
 
-type Iterable[K interface{}] interface {
+type Iterable[K any] interface {
 	Next() (K, bool)
 	ForEach(func(int, K))
 	Last() (K, bool)

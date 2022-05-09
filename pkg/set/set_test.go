@@ -55,3 +55,26 @@ func TestSetCopy(t *testing.T) {
 	assert.True(t, c.Contains(2))
 	assert.True(t, c.Contains(10))
 }
+
+func TestEmptySet(t *testing.T) {
+	s := NewOrderedSet[int]()
+	s.Add(1)
+
+	count := 0
+	s.ForEach(func(_, v int) {
+		assert.Equal(t, 1, v)
+		count++
+	})
+
+	assert.Equal(t, 1, count)
+
+	s.Remove(1)
+
+	count = 0
+	s.ForEach(func(_, v int) {
+		assert.Fail(t, "Should not be reachable")
+		count++
+	})
+
+	assert.Equal(t, 0, count)
+}

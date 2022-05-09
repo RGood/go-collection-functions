@@ -81,6 +81,14 @@ func (ll *LinkedList[K]) Remove(node *Node[K]) {
 	if next != nil {
 		next.Prev = prev
 	}
+
+	if ll.head == node {
+		ll.head = node.Next
+	}
+
+	if ll.tail == node {
+		ll.tail = node.Prev
+	}
 }
 
 type Node[K comparable] struct {

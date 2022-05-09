@@ -36,3 +36,22 @@ func TestOrderedSet(t *testing.T) {
 
 	assert.Equal(t, entries, []int{8, 1, 42, 17})
 }
+
+func TestSetCopy(t *testing.T) {
+	s := NewSet[int]()
+	s.Add(1)
+	s.Add(2)
+	s.Add(10)
+
+	c := s.Copy()
+
+	s.Remove(1)
+
+	assert.False(t, s.Contains(1))
+	assert.True(t, s.Contains(2))
+	assert.True(t, s.Contains(10))
+
+	assert.True(t, c.Contains(1))
+	assert.True(t, c.Contains(2))
+	assert.True(t, c.Contains(10))
+}

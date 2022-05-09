@@ -22,6 +22,15 @@ func (s *Set[K]) Contains(value K) bool {
 	return ok
 }
 
+func (s *Set[K]) Copy() *Set[K] {
+	copiedSet := NewSet[K]()
+	for e, _ := range s.data {
+		copiedSet.Add(e)
+	}
+
+	return copiedSet
+}
+
 type LinkedList[K comparable] struct {
 	head *Node[K]
 	tail *Node[K]
